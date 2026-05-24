@@ -1,0 +1,105 @@
+
+
+POST http://localhost:5050/users/register
+Content-Type: application/json
+
+{
+  "username": "charan2442",
+  "name": "Charan Naik",
+  "email": "charan1233@gmail.com",
+  "password": "Password@123"
+}
+
+###
+
+POST http://localhost:5050/users/login
+Content-Type: application/json
+
+{
+  "email": "charan1233@gmail.com",
+  "password": "Password@123"
+}
+
+###
+
+GET http://localhost:5050/users/userprofdata
+Content-Type: application/json
+
+{
+    "token": "75248227a674edc9085d331157d8a10d1793bad89dbbc3d8a600d0b188b2f7e31222893b9a1c4fc140cd050ad47b4f37cb366b08c64e421f81ca18eca076fdf2"
+}
+
+
+
+
+
+###
+PUT http://localhost:5050/users/user_update
+
+Content-Type: application/json
+
+{
+
+    "token": "becd6c2706dd52d036d6d346618d07a65cdc6e060d2e2b0616d650cd03ad6d2488953c45aa50936e54f31cf033e3861244398ffd8e41f5333afe585b7e54cc89",
+
+    "bio": "Backend Developer",
+    "currentPost": "Node.js Developer",
+    "pastWork": [
+        {
+        "companyName": "Capgemini",
+        "position": "Software Engineer",
+        "startDate": "2023-02-15T00:00:00.000Z"
+        }
+    ],
+    "education": [
+        {
+        "institutionName": "IIT Hyderabad",
+        "degree": "M.Tech",
+        "fieldOfStudy": "AI",
+        "school": "Engineering"
+        }
+    ]
+}
+###
+# PUT http://localhost:5050/users/user_update
+# Content-Type: application/json
+# Authorization: 1b4b0a6fbd31addbc0a953e891a436e113702a37b7c74298affc608ab298f45e5d6940d42c7424723888224788599ea6c27c76ee88d85d3659f430177723b828
+
+# {
+#     "bio": "Backend Developer",
+#     "currentPost": "Node.js Developer",
+#     "pastWork": [
+#         {
+#             "companyName": "Capgemini",
+#             "position": "Software Engineer",
+#             "startDate": "2023-02-15T00:00:00.000Z"
+#         }
+#     ],
+#     "education": [
+#         {
+#             "institutionName": "IIT Hyderabad",
+#             "degree": "M.Tech",
+#             "fieldOfStudy": "AI",
+#             "school": "Engineering"
+#         }
+#     ]
+# }
+
+###
+
+
+GET http://localhost:5050/users/getallusers
+Content-Type: application/json
+
+### 
+
+GET http://localhost:5050/users/updateUserProfileData
+Content-Type: application/json
+{
+    "token": "becd6c2706dd52d036d6d346618d07a65cdc6e060d2e2b0616d650cd03ad6d2488953c45aa50936e54f31cf033e3861244398ffd8e41f5333afe585b7e54cc89"
+}
+    
+###
+
+GET  http://localhost:5050/users/downlodaresume?userId=6a12bce69e0ccd3fafb1d9c0
+Content-Type: application/json
