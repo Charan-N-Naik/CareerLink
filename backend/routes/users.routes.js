@@ -8,7 +8,11 @@ import {
     uploadFile,
     updateUserProfile,
     getUserProfileData,
-    downloadResume
+    downloadResume,
+    sendConnectionRequest,
+    getMyConnectionRequest,
+    allrecivedConnectionRequest,
+    acceptconncection
 } from "../controllers/users.controllers.js";
 
 import { findUserByToken } from "../middelwares/userAuth.middleware.js";
@@ -57,8 +61,41 @@ userRouter.get("/downlodaresume",
 );
 
 
+userRouter.post("/sendconnectionrequest",
+    findUserByToken,
+    sendConnectionRequest
+)
 
 
 userRouter.route("/getallusers").get(getAllusersProfile);
 
+userRouter.route("/getAllRequset")
+.get(
+    findUserByToken, 
+    getMyConnectionRequest
+);
+
+
+userRouter.route("/getallrecivedconnectionrequest")
+.get(
+    findUserByToken,    
+    allrecivedConnectionRequest
+);
+
+userRouter.route("/acceptconnectionrequest")
+.post(
+    findUserByToken,    
+    acceptconncection
+);
+
+userRouter.route("/getallusers").get(
+    getAllusersProfile
+);
+
+
+
+
 export default userRouter;
+
+
+

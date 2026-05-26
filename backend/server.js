@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/users.routes.js';
 import multer from 'multer';
 import path from 'path';
+import  postRouter from './routes/post.routes.js';
 dotenv.config();
 const app=express();
 
@@ -34,8 +35,12 @@ app.get('/',(req,res)=>{
     res.send('Hello World');
 });
 
-
+// Routes
 app.use('/users',userRouter);
+app.use('/posts',postRouter);
+
+
+
 
 run().
 then(()=>{

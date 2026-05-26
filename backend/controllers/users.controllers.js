@@ -2,9 +2,10 @@ import User from "../models/users.models.js";
 import Profile from "../models/profiles.model.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-
+import  ConnectionRequest from "../models/connections.model.js";
 import  fs from "fs";
 import pdfkit from "pdfkit";
+import Comments from "../models/comments.model.js";
 
 const consvertToPDF = async (userdata) => {
     const doc = new pdfkit();
@@ -20,13 +21,13 @@ const consvertToPDF = async (userdata) => {
     doc.fontSize(14).text(`Username: ${userdata.userId.username}`, { align: "center" });
     doc.fontSize(14).text(`Bio: ${userdata.bio}`, { align: "center" });
     
-    doc.fontSize(14).text(`Current position: ${userdata.currentPosition}`, { align: "center" });
+    doc.fontSize(14).text(`Current position: ${userdata.currentPost}`, { align: "center" });
 
     doc.fontSize(14).text("Past Work:", { align: "center" });
 
     userdata.pastWork.forEach((work, index) => {
         doc.fontSize(14).text(`Work ${index + 1}:`, { align: "center" });
-        doc.fontSize(12).text(`Company: ${work.company}`, { align: "center" });
+        doc.fontSize(12).text(`Company: ${work.companyName}`, { align: "center" });
         doc.fontSize(12).text(`Position: ${work.position}`, { align: "center" });
         doc.fontSize(12).text(`Start date: ${work.startDate.toDateString()}`, { align: "center" });
     });
@@ -237,6 +238,155 @@ export const downloadResume = async (req, res) => {
 
 
 
+export const sendConnectionRequest=async(req,res)=>{
+
+    try{
+        const user=req.user;// sender 
+        const conectionId=req.body; // reciver id
+        const connectionUser=await User.findOne({connectionId:connectionId}); // to find the connection id is present in the db or not if it is present then we can send the connection request to the user and if it is not present then we can show the error message to the user that the connection id is not valid
+
+
+        if(!connectionUser){
+            return res.status(400).json({
+                message:"invalid connection id"
+            });     
+        }
+
+
+        const existingconnections=await ConnectionRequest.findOne({  //to chak the connection is aready placed between to id then find the userid and connctionId is present in the db i present means connecton already placed between
+            userId:user._id,
+            connectionId:conectionId
+        }).populate("userId").populate("connectionId");
+
+        conasole.log(connectionId);
+
+        if(existingconnections){
+           return  res.status(400).json({
+                message:"connection request already sent"
+            });     
+        }
+
+        const newConnection =new ConnectionRequest({
+            userId:user.id,
+            connectionId:conectionId,
+            status_accepted:null
+        });
+        await newConnection.save();
+        res.status(200).json({
+            message:"connection request sent successfully"
+        }); 
+        
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({ error: "internal server error  000" });
+    }
+}
+
+
+export const getMyConnectionRequest=async(req,res)=>{ 
+
+    try{
+
+        const user=req.user;
+        const connectionRequests=await ConnectionRequest.find({userId:user._id}).populate("connectionId") // to find the connection request where the connection id is present in the db and the status is null then we can show the connection request to the user
+        res.send(200).json({
+            connectionRequests
+        }); 
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({ error: "internal server error  000" });
+    }
+}
+
+
+export const allrecivedConnectionRequest=async(req,res)=>{
+
+    try{
+        const user=req.user;
+
+        const contectionRequests=await ConnectionRequest.find({connectionId:user._id}).populate("userId") // to find the connection request where the connection id is present in the db and the status is null then we can show the connection request to the user
+        if(!contectionRequests){
+            return res.status(404).json({
+                message:"no connection request found"
+            });
+        }
+        console.log(contectionRequests);
+        res.status(200).json({
+            contectionRequests
+        }); 
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({ error: "internal server error  000" });
+    }
+}
+
+export const acceptconncection=async(req,res)=>{
+    try{
+        const user=req.user;
+        const {requistId,action_Type}=req.body;
+        
+        const connectionRequest=await ConnectionRequest.findById(requistId);
+
+        if(!connectionRequest){
+            return res.status(404).json({
+                message:"connection request not found"
+            });
+        }
+        if(action_Type==="accept"){
+                connectionRequest.status_accepted=true;
+        }
+        else{
+            connectionRequest.status_accepted=false;
+        }
+
+        connectionRequest.save();
+
+        res.status(200).json({
+            message:"connection request "+action_Type+"ed successfully"
+        });
+
+    }catch(err){
+        console.error(err);
+        res.status(500).json({ error: "internal server error  000" });
+    }
+}
+
+
+
+
+// export const likeOnpost =async(req,res)=>{
+//     const userId=req.user._id;
+
+//     try{
+
+//         const {postId} =req.body;
+//         const post =await Post.findById(postId);
+
+//         if(!post){
+//             return res.status(404).json({
+//                 message:"post not found"
+//             });
+//         }
+
+//         const isLiked=await Post.findOne({_id:postId,userId:userId});
+//         if(isLiked){
+//             // desable the like buttion
+//         }
+//         // 
+//         post.likes+=1;
+//         await post.save();
+//         res.status(200).json({
+//             message:"post liked successfully"
+//         });
+
+//     }catch(err){
+//         console.error(err);
+//         res.status(500).json({ error: "internal server error  " });
+//     }
+// }
 
 
 
