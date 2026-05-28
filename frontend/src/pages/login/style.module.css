@@ -75,5 +75,22 @@
 
 .cardContainer__right {
   flex: 0.4;
-  background-color: #5524beb7;
+  background: #00488b;
+  display: flex;
+  justify-content: center;
+  color: rgb(235, 226, 226);
+  align-items: center;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-inline: 1.2rem;
 }
+
+
+.iteamsincont div{
+    color: black;
+    text-align: center;
+    margin-top: 0.8rem;
+    
+
+}
+

@@ -37,7 +37,7 @@ app.get('/',(req,res)=>{
 
 // Routes
 app.use('/users',userRouter);
-app.use('/posts',postRouter);
+app.use('/post',postRouter);
 
 
 

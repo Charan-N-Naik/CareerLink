@@ -47,7 +47,9 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({ message: "all fields are required" });
         }
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({
+            $or: [{ email }, { username }]
+        });
 
         if (existingUser) {
             return res.status(400).json({ message: "user already exists" });
@@ -71,7 +73,7 @@ export const registerUser = async (req, res) => {
 
         await newProfile.save();
 
-        res.status(201).json({ message: "user registered successfully" });
+        res.status(201).json({ message: "user registered successfully"});
 
     } catch (err) {
         console.error(err);

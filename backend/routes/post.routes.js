@@ -32,7 +32,7 @@ const uploader = multer({ storage });
 
 postRouter.route("/test").get(TestPost);
 postRouter.route("/create").post(findUserByToken, uploader.single("media"), createPost);
-postRouter.route("/").get(getAllPosts);
+postRouter.route("/posts").get(getAllPosts);
 postRouter.route("/delete").delete(findUserByToken, delete_post);
 postRouter.route("/comment").post(findUserByToken, commentOnPost);
 postRouter.route("/deleteComment").delete(findUserByToken, delete_commet);

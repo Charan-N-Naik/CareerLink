@@ -2,7 +2,7 @@ import User from "../models/users.models.js";
 
 export const findUserByToken = async (req, res, next) => {
     try {
-        const token = req.body.token;   // read from body
+        const token = req.body.token || req.query.token;   // read from body
 
         
         if (!token) {
