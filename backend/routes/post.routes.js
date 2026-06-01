@@ -5,7 +5,8 @@ import {
     delete_post,
     commentOnPost,
     delete_commet,
-    increase_count_in_likes
+    increase_count_in_likes,
+    getCommetsByPost
 
 } from "../controllers/post.controllers.js";
 
@@ -31,12 +32,13 @@ const uploader = multer({ storage });
 
 
 postRouter.route("/test").get(TestPost);
-postRouter.route("/create").post(findUserByToken, uploader.single("media"), createPost);
+postRouter.route("/create").post(uploader.single("media"),findUserByToken, createPost);
 postRouter.route("/posts").get(getAllPosts);
 postRouter.route("/delete").delete(findUserByToken, delete_post);
 postRouter.route("/comment").post(findUserByToken, commentOnPost);
 postRouter.route("/deleteComment").delete(findUserByToken, delete_commet);
-postRouter.route("/like").post(increase_count_in_likes);
+postRouter.route("/like").post(findUserByToken, increase_count_in_likes);
+postRouter.route("/get_comments").get(getCommetsByPost);
 
 
 

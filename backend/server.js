@@ -20,7 +20,9 @@ app.use(express.json());  /// to parse json data from request body
 
 
 
-app.use(express.static('uploads'));  // to serve static files from uploads folder
+// app.use(express.static('uploads'));  // to serve static files from uploads folder
+
+app.use("/uploads", express.static("uploads"));
 
 
 const run=async () => {

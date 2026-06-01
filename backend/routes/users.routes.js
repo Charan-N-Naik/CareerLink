@@ -12,7 +12,8 @@ import {
     sendConnectionRequest,
     getMyConnectionRequest,
     allrecivedConnectionRequest,
-    acceptconncection
+    acceptconncection,
+    getUserBasedOnUserName
 } from "../controllers/users.controllers.js";
 
 import { findUserByToken } from "../middelwares/userAuth.middleware.js";
@@ -67,7 +68,7 @@ userRouter.post("/sendconnectionrequest",
 )
 
 
-userRouter.route("/getallusers").get(getAllusersProfile);
+
 
 userRouter.route("/getAllRequset")
 .get(
@@ -91,6 +92,12 @@ userRouter.route("/acceptconnectionrequest")
 userRouter.route("/getallusers").get(
     getAllusersProfile
 );
+
+
+userRouter.route("/get-user-based-on-userName").get(
+    
+    getUserBasedOnUserName
+)
 
 
 

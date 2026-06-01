@@ -193,7 +193,7 @@ export const getUserProfileData = async (req, res) => {
 
         const profile = await Profile.findOne({ userId: user._id })
             .populate("userId");
-
+            
         res.status(200).json({
             profile
         });
@@ -207,13 +207,14 @@ export const getUserProfileData = async (req, res) => {
 export const getAllusersProfile=async(req,res)=>{
     try{
         const userprof=await Profile.find({}).populate("userId");
+        // console.log(userprof);
         
-        res.status(200).json({
+        return res.status(200).json({
             userprof
         });
     }catch(err){
         console.error(err);
-        res.status(500).json({ error: "internal server error" });
+        return res.status(500).json({ error: "internal server error" });
     }
 }
 
@@ -240,59 +241,55 @@ export const downloadResume = async (req, res) => {
 
 
 
-export const sendConnectionRequest=async(req,res)=>{
+export const sendConnectionRequest = async (req, res) => {
+  try {
+    const user = req.user;
+    const { connectionId } = req.body;
 
-    try{
-        const user=req.user;// sender 
-        const conectionId=req.body; // reciver id
-        const connectionUser=await User.findOne({connectionId:connectionId}); // to find the connection id is present in the db or not if it is present then we can send the connection request to the user and if it is not present then we can show the error message to the user that the connection id is not valid
+    console.log(connectionId);
 
+    const connectionUser = await User.findById(connectionId);
 
-        if(!connectionUser){
-            return res.status(400).json({
-                message:"invalid connection id"
-            });     
-        }
-
-
-        const existingconnections=await ConnectionRequest.findOne({  //to chak the connection is aready placed between to id then find the userid and connctionId is present in the db i present means connecton already placed between
-            userId:user._id,
-            connectionId:conectionId
-        }).populate("userId").populate("connectionId");
-
-        conasole.log(connectionId);
-
-        if(existingconnections){
-           return  res.status(400).json({
-                message:"connection request already sent"
-            });     
-        }
-
-        const newConnection =new ConnectionRequest({
-            userId:user.id,
-            connectionId:conectionId,
-            status_accepted:null
-        });
-        await newConnection.save();
-        res.status(200).json({
-            message:"connection request sent successfully"
-        }); 
-        
+    if (!connectionUser) {
+      return res.status(400).json({
+        message: "invalid connection id",
+      });
     }
-    catch(err){
-        console.error(err);
-        res.status(500).json({ error: "internal server error  000" });
+
+    const existingconnections = await ConnectionRequest.findOne({
+      userId: user._id,
+      connectionId: connectionId,
+    });
+
+    if (existingconnections) {
+      return res.status(400).json({
+        message: "connection request already sent",
+      });
     }
-}
+
+    const newConnection = new ConnectionRequest({
+      userId: user._id,
+      connectionId: connectionId,
+      status_accepted: null,
+    });
+
+    await newConnection.save();
+
+    res.status(200).json({
+      message: "connection request sent successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "internal server error 000" });
+  }
+};
 
 
-export const getMyConnectionRequest=async(req,res)=>{ 
-
+export const getMyConnectionRequest=async(req,res)=>{   // sended connection request
     try{
-
         const user=req.user;
         const connectionRequests=await ConnectionRequest.find({userId:user._id}).populate("connectionId") // to find the connection request where the connection id is present in the db and the status is null then we can show the connection request to the user
-        res.send(200).json({
+        res.status(200).json({
             connectionRequests
         }); 
     }
@@ -303,8 +300,7 @@ export const getMyConnectionRequest=async(req,res)=>{
 }
 
 
-export const allrecivedConnectionRequest=async(req,res)=>{
-
+export const allrecivedConnectionRequest=async(req,res)=>{   // recived connection 
     try{
         const user=req.user;
 
@@ -393,8 +389,37 @@ export const acceptconncection=async(req,res)=>{
 
 
 
+export const getUserBasedOnUserName = async (req, res) => {
+  try {
+    const { username } = req.query;
 
+    console.log("username from query:", username);
 
+    const user = await User.findOne({ username });
 
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
+    const userProfile = await Profile.findOne({
+      userId: user._id,
+    }).populate("userId");
 
+    if (!userProfile) {
+      return res.status(404).json({
+        message: "Profile not found",
+      });
+    }
+
+    return res.status(200).json({
+      userProfile,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "internal server error",
+    });
+  }
+};

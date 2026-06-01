@@ -1,0 +1,65 @@
+.container {
+    padding: 1.3rem;
+    background: #ffffff83;
+}
+
+.backDropContainer {
+    width: 100%;
+    height: 30vh;
+    background: url("https://images.pexels.com/photos/545521/pexels-photo-545521.jpeg?auto=compress");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    border-radius: 20px;
+}
+.backDropContainer img {
+    width: 10em;
+    height: 10em;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -30%;
+    left: 8%;
+    text-align: center;
+}
+.profileContainer__details {
+    padding-top: 3.6rem;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+}
+
+.card__profileContainer {
+    display: flex;
+}
+
+.card__profileContainer > img {
+    width: 3.4rem;
+    height: auto;
+    height: 3.4rem;
+    object-fit: cover;
+}
+
+.connectBtn {
+    padding-inline: 0.8rem;
+    padding-block: 0.3rem;
+    background: rgba(3, 93, 183, 0.905);
+    outline: none;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.connectedButton {
+    padding-inline: 0.8rem;
+    padding-block: 0.3rem;
+    background: rgba(253, 255, 254, 0.9);
+    outline: none;
+    border: 1px solid black;
+    color: rgb(34, 109, 249);
+    border-radius: 10px;
+    cursor: pointer;
+}
