@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { getAllposts } from "@/config/redux/action/postAction";
 import { useDispatch } from "react-redux";
 import { getConnectionsRequest } from "@/config/redux/action/authAction";
-import { BASE_URL } from "@/config";
+import { BASE_URL, mediaUrl } from "@/config";
 import { getAboutUser } from "@/config/redux/action/authAction";
 import { useRouter } from "next/router";
 import { clientserver } from "@/config";
@@ -109,7 +109,7 @@ const ProfilePage = () => {
             <div className={styles.backDropContainer}>
               <div className={styles.avatarWrapper}>
                 <img
-                  src={`${BASE_URL}/uploads/${userProfile.userId.profilePicture}`}
+                  src={mediaUrl(userProfile.userId.profilePicture)}
                   alt="avatar"
                 />
                 <div className={styles.avatarOverlay}>
@@ -184,7 +184,7 @@ const ProfilePage = () => {
                           <div className={styles.card__profileContainer}>
                             {post.media !== "" ? (
                               <img
-                                src={`${BASE_URL}/${post.media}`}
+                                src={mediaUrl(post.media)}
                                 alt="post"
                               />
                             ) : null}

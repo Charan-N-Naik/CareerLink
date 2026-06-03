@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import ConnectionRequest from "../models/connections.model.js";
 import fs from "fs";
+import { uploadBuffer } from "../utils/cloudinary.js";
 import pdfkit from "pdfkit";
 import Comments from "../models/comments.model.js";
 
@@ -136,12 +137,15 @@ export const uploadFile = async (req, res) => {
 
     const user = req.user; // from middleware
 
-    user.profilePicture = file.filename;
+    // upload buffer to Cloudinary
+    const result = await uploadBuffer(file.buffer, { folder: "socialApp/profiles" });
+
+    user.profilePicture = result.secure_url;
     await user.save();
 
     res.status(200).json({
       message: "file uploaded successfully",
-      filename: file.filename,
+      url: result.secure_url,
     });
   } catch (err) {
     console.error(err);

@@ -17,16 +17,8 @@ import { findUserByToken } from "../middelwares/userAuth.middleware.js";
 const postRouter=Router();
 
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");   
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    }
-});
-
-
+// Use memory storage so controllers can upload buffers to Cloudinary
+const storage = multer.memoryStorage();
 const uploader = multer({ storage });
 
 

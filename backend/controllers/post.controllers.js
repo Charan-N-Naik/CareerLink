@@ -1,5 +1,6 @@
 import Post from "../models/posts.models.js";
 import Comment from "../models/comments.model.js";
+import { uploadBuffer } from "../utils/cloudinary.js";
 
 export const TestPost = async (req, res) => {
   res.status(200).json({
@@ -11,11 +12,20 @@ export const createPost = async (req, res) => {
   try {
     const user = req.user;
 
+    let mediaUrl = "";
+    let fileType = "";
+
+    if (req.file) {
+      const result = await uploadBuffer(req.file.buffer, { folder: "socialApp/posts" });
+      mediaUrl = result.secure_url;
+      fileType = req.file.mimetype.split("/")[1];
+    }
+
     const createdPost = new Post({
       userId: user._id,
       body: req.body.body,
-      media: req.file ? req.file.path.replaceAll("\\", "/") : "",
-      fileType: req.file ? req.file.mimetype.split("/")[1] : "",
+      media: mediaUrl,
+      fileType,
     });
 
     await createdPost.save();

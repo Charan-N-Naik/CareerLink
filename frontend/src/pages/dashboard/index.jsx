@@ -14,7 +14,7 @@ import styles from "./styles.module.css";
 
 import { deletePost } from "@/config/redux/action/postAction";
 
-import { BASE_URL } from "../../config/index";
+import { BASE_URL, mediaUrl } from "../../config/index";
 
 import {
   getAllComments,
@@ -89,7 +89,7 @@ export default function dashboard() {
               <img
                 className={styles.userProfile}
                 width={200}
-                src={`${BASE_URL}/uploads/${authState.user?.userId?.profilePicture}`}
+                src={mediaUrl(authState.user?.userId?.profilePicture)}
                 alt=""
               />
 
@@ -141,7 +141,7 @@ export default function dashboard() {
                     <div className={styles.singleCard__profileContainer}>
                       <img
                         className={styles.userProfile}
-                        src={`${BASE_URL}/uploads/${authState.user?.userId?.profilePicture}`}
+                        src={mediaUrl(authState.user?.userId?.profilePicture)}
                         alt={post.userId.name}
                       />
 
@@ -309,7 +309,7 @@ export default function dashboard() {
                 >
                   <div className={styles.singleComment__profileContainer}>
                     {/* <img
-                      src={`${BASE_URL}/uploads/${comment.userId?.profilePicture}`}
+                      src={mediaUrl(comment.userId?.profilePicture)}
                       alt=""
                     /> */}
 

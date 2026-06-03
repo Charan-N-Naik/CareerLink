@@ -5,7 +5,7 @@ import { clientserver } from "@/config";
 import UserLayout from "@/layout/userlauout/MainUserLayout";
 import DashboardLayout from "@/layout/dashboardlayout";
 import styles from "./styles.module.css";
-import { BASE_URL } from "@/config";
+import { BASE_URL, mediaUrl } from "@/config";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -99,7 +99,7 @@ export default function ViewProfilePage({ userProfile }) {
           <div className={styles.backDropContainer}>
             <img
               className={styles.backDrop}
-              src={`${BASE_URL}/uploads/${userProfile.userId.profilePicture}`}
+              src={mediaUrl(userProfile.userId.profilePicture)}
               alt="backdrop"
             />
           </div>
@@ -166,7 +166,7 @@ export default function ViewProfilePage({ userProfile }) {
                       );
 
                       window.open(
-                        `${BASE_URL}/uploads/${response.data.message}`,
+                        mediaUrl(response.data.message),
                         "_blank",
                       );
                     }}

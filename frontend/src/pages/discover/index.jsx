@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "@/config/redux/action/authAction";
 import styles from "./styles.module.css";
 
-import { BASE_URL } from "@/config";
+import { BASE_URL, mediaUrl } from "@/config";
 import { useRouter } from "next/router";
 export default function Discover() {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function Discover() {
                   className={styles.userCard}
                 >
                   <img
-                    src={`${BASE_URL}/uploads/${user.userId?.profilePicture}`}
+                    src={mediaUrl(user.userId?.profilePicture)}
                     alt="profile"
                     className={styles.userCard_image}
                   />
