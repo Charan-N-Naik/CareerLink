@@ -54,5 +54,24 @@
 }
 
 
+@media screen and (max-width: 950px)  {
+    .mainContainer {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .mainContainer__left, .mainContainer__right {
+        flex: 1;
+    }
+
+    .mainContainer__left > p:nth-child(1) {
+        font-size: 2.2rem;
+    }
+
+    .mainContainer__left > p:nth-child(2) {
+        font-size: 1.3rem;
+    } 
+  
+}
 
 

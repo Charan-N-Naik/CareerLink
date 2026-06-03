@@ -29,12 +29,13 @@ export default function ViewProfilePage({ userProfile }) {
 
   const getUsersPost = async () => {
     await dispatch(getAllposts());
-    console.log(userProfile);
+    
     await dispatch(
       getConnectionsRequest({
         token: localStorage.getItem("token"),
       }),
     );
+   dispatch(getConnectionsRequest({ token: localStorage.getItem("token") }))
   };
 
   useEffect(() => {
@@ -61,7 +62,24 @@ export default function ViewProfilePage({ userProfile }) {
         setIsConnectionNull(false);
       }
     }
-  }, [authState.connections]);
+
+    if (
+      authState.connectionRequests.some(
+        (user) => user.userId._id === userProfile.userId._id,
+      )
+    ) {
+      setIsCurrentUserInConnection(true);
+      if (
+        authState.connectionRequests.find(
+          (user) => user.userId._id === userProfile.userId._id,
+        )?.status_accepted === true
+      ) {
+        setIsConnectionNull(false);
+      }
+    }
+
+
+  }, [authState.connections,authState.connectionRequests]);
 
   useEffect(() => {
     getUsersPost();
@@ -72,6 +90,7 @@ export default function ViewProfilePage({ userProfile }) {
   useEffect(() => {
     console.log("From View: View Profile"); // on the network
   }, []);
+
 
   return (
     <UserLayout>
@@ -84,65 +103,137 @@ export default function ViewProfilePage({ userProfile }) {
               alt="backdrop"
             />
           </div>
-        </div>
-        <div className={styles.profileContainer__details}>
-          <div style={{ display: "flex", gap: "0.7rem" }}>
-            <div style={{ flex: "0.8" }}>
-              <div
-                style={{
-                  display: "flex",
-                  width: "fit-content",
-                  alignItems: "center",
-                  gap: "1.2rem",
-                }}
-              >
-                <h2>{userProfile.userId.name}</h2>
-                <p style={{ color: "grey" }}>@{userProfile.userId.username}</p>
+
+          <div className={styles.profileContainer__details}>
+            <div className={styles.profileContainer__flex}>
+              <div style={{ flex: "0.8" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "fit-content",
+                    alignItems: "center",
+                    gap: "1.2rem",
+                  }}
+                >
+                  <h2>{userProfile.userId.name}</h2>
+                  <p style={{ color: "grey" }}>
+                    @{userProfile.userId.username}
+                  </p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1.2rem",
+                  }}
+                >
+                  {isCurrentUserInConnection ? (
+                    <button className={styles.connectedButton}>
+                      {isConnectionNull ? "pending.." : "Connected"}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={async () => {
+                        const result = await dispatch(
+                          sendConnectionRequest({
+                            token: localStorage.getItem("token"),
+                            connectionId: userProfile.userId._id,
+                          }),
+                          
+                        );
+
+                        if (sendConnectionRequest.fulfilled.match(result)) {
+                          setIsCurrentUserInConnection(true);
+                        }
+                      }}
+                      className={styles.connectBtn}
+                    >
+                      Connect
+                    </button>
+                  )}
+
+                  <div
+                    onClick={async () => {
+                      console.log("profile id:", userProfile._id);
+
+                      const response = await clientserver.get(
+                        "/users/downlodaresume",
+                        {
+                          params: {
+                            userId: userProfile._id,
+                          },
+                        },
+                      );
+
+                      window.open(
+                        `${BASE_URL}/uploads/${response.data.message}`,
+                        "_blank",
+                      );
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <svg
+                      style={{ width: "1.2em" }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                <div>
+                  <p>{userProfile.bio}</p>
+                </div>
               </div>
 
-              {isCurrentUserInConnection ? (
-                <button className={styles.connectedButton}>
-                  {isConnectionNull ? "pending.." : "Connected"}
-                </button>
-              ) : (
-                <button
-                  onClick={async () => {
-                    const result = await dispatch(
-                      sendConnectionRequest({
-                        token: localStorage.getItem("token"),
-                        connectionId: userProfile.userId._id,
-                      }),
-                    );
+              <div style={{ flex: "0.2" }}>
+                <h3>Recent Activity</h3>
 
-                    if (sendConnectionRequest.fulfilled.match(result)) {
-                      setIsCurrentUserInConnection(true);
-                    }
-                  }}
-                  className={styles.connectBtn}
-                >
-                  Connect
-                </button>
-              )}
-              <div>
-                <p>{userProfile.bio}</p>
+                {userPosts.map((post) => {
+                  return (
+                    <div key={post._id} className={styles.postCard}>
+                      <div className={styles.card}>
+                        <div className={styles.card__profileContainer}>
+                          {post.media !== "" ? (
+                            <img src={`${BASE_URL}/${post.media}`} alt="post" />
+                          ) : null}
+                        </div>
+
+                        <p>{post.body}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
+          </div>
+          <div className="workHistory">
+            <h4>Work History</h4>
 
-            <div style={{ flex: "0.2" }}>
-              <h3>Recent Activity</h3>
-
-              {userPosts.map((post) => {
+            <div className={styles.workHistoryContainer}>
+              {userProfile.pastWork.map((work, index) => {
                 return (
-                  <div key={post._id} className={styles.postCard}>
-                    <div className={styles.card}>
-                      <div className={styles.card__profileContainer}>
-                        {post.media !== "" ? (
-                          <img src={`${BASE_URL}/${post.media}`} alt="post" />
-                        ) : null}
-                      </div>
-
-                      <p>{post.body}</p>
-                    </div>
+                  <div key={index} className={styles.workHistoryCard}>
+                    <p
+                      style={{
+                        fontWeight: "bold",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.8rem",
+                      }}
+                    >
+                      {work.companyName} - {work.position}
+                    </p>
+                    <p>{work.years}</p>
                   </div>
                 );
               })}

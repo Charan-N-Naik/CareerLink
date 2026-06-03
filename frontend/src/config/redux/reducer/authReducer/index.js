@@ -10,7 +10,7 @@ import {
 
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  user: [],
+  user: undefined,
   alluser: [],
   isError: false,
   isSuccess: false,

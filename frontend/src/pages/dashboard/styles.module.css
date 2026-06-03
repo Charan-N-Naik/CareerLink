@@ -147,6 +147,7 @@
   justify-content: space-between;
   padding-block: 0.6rem;
   cursor: pointer;
+  
 }
 
 .singleOption__optionsContainer {
@@ -159,6 +160,7 @@
 .singleOption__optionsContainer > svg {
   height: 100%;
   width: 8%;
+  min-width: 1rem;
 }
 
 
@@ -209,6 +211,7 @@
   border-radius: 10px;
   position: relative;
   padding: 1.4rem;
+  min-width: 40vh
 }
 
 .postCommentContainer {
@@ -225,6 +228,7 @@
 
 
 .postCommentContainer > input {
+  
   flex: 0.9;
   padding-inline: 1.5rem;
   padding-block: 1.2rem;
@@ -236,6 +240,7 @@
 
 .postCommentContainer > input:focus {
   border: 1px solid silver;
+  
 }
 
 .postCommentContainer__commentBtn {
@@ -247,4 +252,13 @@
   text-align: center;
   color: white;
   cursor: pointer;
+  
+}
+
+
+@media  screen and (max-width: 600px) {
+  .allCommentsContainer { 
+    width: 90%;
+   
+  }
 }

@@ -6,7 +6,8 @@ import {
     registerUser,
     loginUser,
     uploadFile,
-    updateUserProfile,
+    updateUserData,
+    updateProfileData,
     getUserProfileData,
     downloadResume,
     sendConnectionRequest,
@@ -43,11 +44,11 @@ userRouter.post(
     uploadFile
 );
 
-userRouter.put(
-    "/user_update",
-    findUserByToken,
-    updateUserProfile
-);
+// userRouter.put(
+//     "/user_update",
+//     findUserByToken,
+//     updateUserProfile
+// );
 
 userRouter.get(
     "/userprofdata",
@@ -98,6 +99,9 @@ userRouter.route("/get-user-based-on-userName").get(
     
     getUserBasedOnUserName
 )
+
+userRouter.post("/user_update", findUserByToken, updateUserData);
+userRouter.post("/update_profile_data", findUserByToken, updateProfileData);
 
 
 

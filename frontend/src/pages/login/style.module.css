@@ -53,25 +53,7 @@
     display: flex;
     gap: 1.2rem;
     }
-    @media (max-width: 900px) {
-    .inputRow {
-        flex-direction: column;
-        width: 100%;
-        gap: 0.8rem;
-    }
-
-    .inputRow .inputField {
-        width: 100%;
-    }
-    }
-    .buttonWithOutline {
-        padding: 0.8rem 1.3rem;
-        background: rgb(236, 236, 236);
-        width: 100%;
-        border-radius: 10px;
-         box-sizing: border-box;
-         cursor: pointer;
-    }
+    
 
 .cardContainer__right {
   flex: 0.4;
@@ -93,4 +75,30 @@
     
 
 }
+
+
+  .buttonWithOutline {
+        padding: 0.8rem 1.3rem;
+        background: rgb(236, 236, 236);
+        width: 100%;
+        border-radius: 10px;
+         box-sizing: border-box;
+         cursor: pointer;
+    }
+
+
+    @media (max-width: 600px) {
+    .inputRow {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.8rem;
+    }
+
+    .inputRow .inputField {
+        width: 100%;
+    }
+    .cardContainer{
+      flex-direction: column;
+    }
+    }
 

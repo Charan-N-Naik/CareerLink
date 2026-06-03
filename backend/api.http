@@ -16,8 +16,8 @@ POST http://localhost:5050/users/login
 Content-Type: application/json
 
 {
-  "email": "chaa@gmail.com",
-  "password": "Password@123"
+  "email": "charan@gmail.com",
+  "password": "password"
 }
 
 ###
@@ -26,7 +26,7 @@ GET http://localhost:5050/users/userprofdata
 Content-Type: application/json
 
 {
-    "token": "21ddfc88f9537a95cbb48e85d188aba5e80b9c2c20d4506f274757e7a8fba640f2777429040888b895a9869324e4281f09122609c417eb09b6b65fbc10dd4904"
+    "token": "dd36922fbb2a82b2fca90707427bef7ce3e8f99e2de120716e11b6da2d745b4b34994d21af59ce2d934d92d4879de0388f0299fd9c5a4f9a5fbcc10e015c1419"
 }
 
 
@@ -40,8 +40,7 @@ Content-Type: application/json
 
 {
 
-    "token": "becd6c2706dd52d036d6d346618d07a65cdc6e060d2e2b0616d650cd03ad6d2488953c45aa50936e54f31cf033e3861244398ffd8e41f5333afe585b7e54cc89",
-
+    
     "bio": "Backend Developer",
     "currentPost": "Node.js Developer",
     "pastWork": [
@@ -122,4 +121,30 @@ Content-Type: application/json
 
 {
     "token":"21ddfc88f9537a95cbb48e85d188aba5e80b9c2c20d4506f274757e7a8fba640f2777429040888b895a9869324e4281f09122609c417eb09b6b65fbc10dd4904"
+}
+
+
+###
+PUT http://localhost:5050/users/user_update
+Content-Type: application/json
+
+{
+  "token": "dd36922fbb2a82b2fca90707427bef7ce3e8f99e2de120716e11b6da2d745b4b34994d21af59ce2d934d92d4879de0388f0299fd9c5a4f9a5fbcc10e015c1419",
+  "bio": "Backend Developer",
+  "currentPost": "Node.js Developer",
+  "pastWork": [
+    {
+      "companyName": "Capgemini",
+      "position": "Software Engineer",
+      "startDate": "2023-02-15T00:00:00.000Z"
+    }
+  ],
+  "education": [
+    {
+      "institutionName": "IIT Hyderabad",
+      "degree": "M.Tech",
+      "fieldOfStudy": "AI",
+      "school": "Engineering"
+    }
+  ]
 }
